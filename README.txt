@@ -1,20 +1,12 @@
-# Goiás: Mais Fluxo, Menos Trânsito
+GOIÁS: MAIS FLUXO, MENOS TRÂNSITO — VERSÃO 4
 
-Protótipo escolar responsivo, com mapa de referência incorporado, rotas esquemáticas animadas e comparador interativo de tempos.
+Conteúdo:
+- index.html: site atualizado com seis corredores de exemplo e simulação ferroviária interativa.
 
-## Como testar
-Abra `index.html` em um navegador moderno. A imagem do projeto está incorporada no próprio HTML, então não é necessário enviar arquivos extras para a visualização local.
+Para atualizar no GitHub:
+1. Abra o repositório Goias-mais-fluxo.
+2. Envie este index.html para a raiz do repositório, substituindo o anterior.
+3. Confirme em Commit changes.
+4. Aguarde o GitHub Pages atualizar.
 
-## Publicar gratuitamente com GitHub Pages
-1. Crie ou entre em uma conta em https://github.com/
-2. Crie um repositório público, por exemplo `goias-mais-fluxo`.
-3. Envie o arquivo `index.html` para a raiz do repositório.
-4. No repositório, abra Settings > Pages.
-5. Em Build and deployment, selecione Deploy from a branch.
-6. Selecione a branch `main` e a pasta `/ (root)`, depois salve.
-7. Aguarde a publicação. O GitHub mostrará o endereço público em Settings > Pages.
-
-## Avisos de precisão
-- A imagem original é usada como referência visual; as rotas animadas são diagramas esquemáticos, não uma digitalização exata do mapa.
-- O comparador inicia com 65 e 32 minutos como valores ilustrativos discutidos na conversa. Confirme-os no documento original antes de apresentar como dados oficiais.
-- Este protótipo não é um modelo de engenharia validado nem uma simulação operacional de segurança.
+O mapa geográfico usa tiles do OpenStreetMap e precisa de internet. As rotas, estações, distâncias, durações, frequências, capacidades e dimensionamento da frota são cenários ilustrativos, não dados oficiais nem estudo de engenharia.
