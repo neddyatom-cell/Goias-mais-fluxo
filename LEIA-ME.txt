@@ -1,0 +1,5 @@
+GOIÁS: MAIS FLUXO, MENOS TRÂNSITO — VERSÃO COM REVISÃO EDITORIAL
+
+O arquivo index.html contém o site completo. Para atualizar o GitHub Pages, envie este arquivo à raiz do repositório e confirme a substituição do arquivo anterior.
+
+Nota metodológica: os corredores, as paradas e os tempos apresentados têm caráter conceitual e ilustrativo. Não representam traçados aprovados, medições atuais nem resultados de estudo de engenharia.
