@@ -106,13 +106,29 @@ footer{background:#e8f0f5;padding:22px 16px;color:#536573;font-size:.85rem}.smal
      <g id="movingTrain" transform="translate(50 210)"><rect class="train" x="-19" y="-10" rx="5" width="38" height="20"/><rect class="train-window" x="-12" y="-6" width="8" height="6" rx="1"/><rect class="train-window" x="0" y="-6" width="8" height="6" rx="1"/><circle cx="-10" cy="11" r="3" fill="#263746"/><circle cx="10" cy="11" r="3" fill="#263746"/></g>
     </svg>
    </div>
-   <div class="controls"><button class="btn" id="playBtn">▶ Iniciar</button><button class="btn secondary" id="resetBtn">↺ Reiniciar</button></div>
-   <label for="speed">Velocidade da animação</label><input id="speed" type="range" min="1" max="5" value="2">
-   <p class="small" id="simStatus" aria-live="polite">Pronto para iniciar · animação ilustrativa</p>
+   <div class="controls"><button class="btn" id="playBtn">▶ Iniciar circulação</button><button class="btn secondary" id="resetBtn">↺ Reiniciar ciclo</button></div>
+   <div class="stats" style="margin-top:14px">
+    <div class="stat"><strong id="simClock">06:00</strong><small>Relógio simulado</small></div>
+    <div class="stat"><strong id="activeTrains">3</strong><small>Trens em circulação</small></div>
+    <div class="stat"><strong id="headway">10 min</strong><small>Intervalo entre trens</small></div>
+   </div>
+   <div class="grid two" style="margin-top:12px">
+    <div>
+     <label for="speed">Velocidade da animação</label><input id="speed" type="range" min="1" max="5" value="2">
+     <div class="small">Mais rápido = relógio simulado avança mais depressa.</div>
+    </div>
+    <div>
+     <label for="frequency">Intervalo entre partidas</label><select id="frequency"><option value="5">5 minutos · alta frequência</option><option value="10" selected>10 minutos · padrão</option><option value="15">15 minutos</option><option value="20">20 minutos</option></select>
+    </div>
+   </div>
+   <label for="demand">Demanda estimada de passageiros</label><input id="demand" type="range" min="20" max="100" value="65">
+   <div class="small"><span id="demandVal">65%</span> da capacidade de referência por trem</div>
+   <div class="result"><div>Indicadores do cenário simulado</div><strong id="simLoad">65% de ocupação</strong><div class="small" id="simSummary">3 trens · intervalo de 10 min · cenário ilustrativo</div></div>
+   <p class="small" id="simStatus" aria-live="polite">Pronto para iniciar · simulação demonstrativa, sem horários reais.</p>
   </article>
   <article class="card">
    <h3>Como interpretar</h3>
-   <p class="muted">O trem é um símbolo animado que percorre uma linha desenhada para demonstrar o conceito de circulação entre estações. Não é um horário operacional nem uma simulação de capacidade.</p>
+   <p class="muted">A simulação mostra três composições em movimento, um relógio virtual, intervalo entre partidas e um controle de demanda. Esses indicadores ajudam a explicar como frequência e ocupação podem ser discutidas no planejamento, mas não são uma previsão operacional.</p>
    <div class="stat" style="margin-top:12px"><strong id="routeName">Rota A</strong><small id="routeDesc">Traçado demonstrativo com uma conexão intermediária.</small></div>
    <p class="small">Para uma versão técnica, cada linha precisa ser redesenhada com pontos e ligações extraídos do projeto original.</p>
   </article>
@@ -182,19 +198,23 @@ footer{background:#e8f0f5;padding:22px 16px;color:#536573;font-size:.85rem}.smal
 </script>
 <script>
 const routes=[
- {name:"Rota A",desc:"Traçado demonstrativo com uma conexão intermediária.",d:"M50 210 C120 190 140 90 240 110 S380 220 540 60",stations:[["Origem",50,210],["Conexão",240,110],["Destino",540,60]]},
- {name:"Rota B",desc:"Alternativa esquemática com duas conexões.",d:"M50 60 C160 70 130 220 290 180 S420 100 540 210",stations:[["Origem",50,60],["Conexão 1",290,180],["Destino",540,210]]},
- {name:"Rota C",desc:"Ligação ilustrativa em formato de corredor.",d:"M50 130 C150 30 220 240 330 130 S450 70 540 130",stations:[["Origem",50,130],["Conexão",330,130],["Destino",540,130]]}
+ {name:"Rota A",desc:"Corredor metropolitano demonstrativo, com paradas e circulação em ciclo.",d:"M50 210 C120 190 140 90 240 110 S380 220 540 60",stations:[["Origem",50,210],["Conexão",240,110],["Destino",540,60]]},
+ {name:"Rota B",desc:"Alternativa esquemática com duas conexões intermediárias.",d:"M50 60 C160 70 130 220 290 180 S420 100 540 210",stations:[["Origem",50,60],["Conexão 1",290,180],["Destino",540,210]]},
+ {name:"Rota C",desc:"Ligação ilustrativa em corredor com distribuição de estações.",d:"M50 130 C150 30 220 240 330 130 S450 70 540 130",stations:[["Origem",50,130],["Conexão",330,130],["Destino",540,130]]}
 ];
-const pathMain=document.getElementById("pathMain"),pathDash=document.getElementById("pathDash"),train=document.getElementById("movingTrain"),stations=document.getElementById("stations");
-let routeIndex=0,progress=0,running=false,frame=0,last=0;
-function drawStations(list){stations.innerHTML=list.map(s=>`<circle class="station" cx="${s[1]}" cy="${s[2]}" r="8"/><text x="${s[1]}" y="${s[2]-17}" text-anchor="middle" font-size="14" fill="#203d52">${s[0]}</text>`).join("")}
-function chooseRoute(i){routeIndex=i;const r=routes[i];pathMain.setAttribute("d",r.d);pathDash.setAttribute("d",r.d);drawStations(r.stations);progress=0;placeTrain();document.getElementById("routeName").textContent=r.name;document.getElementById("routeDesc").textContent=r.desc;document.querySelectorAll("[data-route]").forEach(b=>b.setAttribute("aria-pressed",String(+b.dataset.route===i)));document.getElementById("simStatus").textContent="Rota selecionada · animação ilustrativa"}
-function placeTrain(){const len=pathMain.getTotalLength();const p=pathMain.getPointAtLength(Math.min(len,progress*len));const p2=pathMain.getPointAtLength(Math.min(len,progress*len+1));const angle=Math.atan2(p2.y-p.y,p2.x-p.x)*180/Math.PI;train.setAttribute("transform",`translate(${p.x} ${p.y}) rotate(${angle})`)}
-function animate(t){if(!running)return;if(!last)last=t;const dt=t-last;last=t;progress+=dt*Number(document.getElementById("speed").value)*0.000035;if(progress>=1){progress=1;running=false;document.getElementById("playBtn").textContent="▶ Iniciar";document.getElementById("simStatus").textContent="Chegou ao destino · animação concluída"}placeTrain();if(running)frame=requestAnimationFrame(animate)}
-document.querySelectorAll("[data-route]").forEach(b=>b.addEventListener("click",()=>{running=false;cancelAnimationFrame(frame);last=0;document.getElementById("playBtn").textContent="▶ Iniciar";chooseRoute(+b.dataset.route)}));
-document.getElementById("playBtn").addEventListener("click",()=>{if(running){running=false;cancelAnimationFrame(frame);last=0;document.getElementById("playBtn").textContent="▶ Continuar";document.getElementById("simStatus").textContent="Pausado";return}if(progress>=1)progress=0;running=true;last=0;document.getElementById("playBtn").textContent="Ⅱ Pausar";document.getElementById("simStatus").textContent="Trem em movimento · simulação ilustrativa";frame=requestAnimationFrame(animate)});
-document.getElementById("resetBtn").addEventListener("click",()=>{running=false;cancelAnimationFrame(frame);last=0;progress=0;placeTrain();document.getElementById("playBtn").textContent="▶ Iniciar";document.getElementById("simStatus").textContent="Reiniciado · pronto para iniciar"});
+const pathMain=document.getElementById("pathMain"),pathDash=document.getElementById("pathDash"),trainTemplate=document.getElementById("movingTrain"),stations=document.getElementById("stations");
+let routeIndex=0,progress=0,running=false,frame=0,last=0,simMinutes=360;
+const trainFleet=[trainTemplate];
+for(let i=1;i<3;i++){const clone=trainTemplate.cloneNode(true);clone.removeAttribute("id");clone.setAttribute("opacity",String(1-i*.12));pathMain.parentNode.appendChild(clone);trainFleet.push(clone)}
+function drawStations(list){stations.innerHTML=list.map((s,i)=>`<circle class="station" cx="${s[1]}" cy="${s[2]}" r="8"/><text x="${s[1]}" y="${s[2]-17}" text-anchor="middle" font-size="14" fill="#203d52">${s[0]}</text>`).join("")}
+function chooseRoute(i){routeIndex=i;const r=routes[i];pathMain.setAttribute("d",r.d);pathDash.setAttribute("d",r.d);drawStations(r.stations);progress=0;placeFleet();document.getElementById("routeName").textContent=r.name;document.getElementById("routeDesc").textContent=r.desc;document.querySelectorAll("[data-route]").forEach(b=>b.setAttribute("aria-pressed",String(+b.dataset.route===i)));document.getElementById("simStatus").textContent="Corredor selecionado · dados operacionais são ilustrativos";updateDashboard()}
+function placeFleet(){const len=pathMain.getTotalLength();trainFleet.forEach((tr,i)=>{let p=(progress+i/3)%1;const d=p*len,pt=pathMain.getPointAtLength(d),p2=pathMain.getPointAtLength(Math.min(len,d+1));const angle=Math.atan2(p2.y-pt.y,p2.x-pt.x)*180/Math.PI;tr.setAttribute("transform",`translate(${pt.x} ${pt.y}) rotate(${angle})`)})}
+function updateDashboard(){const freq=+document.getElementById("frequency").value,demand=+document.getElementById("demand").value;const hh=String(Math.floor(simMinutes/60)%24).padStart(2,"0"),mm=String(Math.floor(simMinutes%60)).padStart(2,"0");document.getElementById("simClock").textContent=hh+":"+mm;document.getElementById("activeTrains").textContent=String(Math.max(1,Math.min(6,Math.ceil(30/freq))));document.getElementById("headway").textContent=freq+" min";document.getElementById("demandVal").textContent=demand+"%";document.getElementById("simLoad").textContent=demand+"% de ocupação";document.getElementById("simSummary").textContent=`${Math.max(1,Math.min(6,Math.ceil(30/freq))} trens · intervalo de ${freq} min · demanda ${demand}%`; }
+function animate(t){if(!running)return;if(!last)last=t;const dt=t-last;last=t;const speed=Number(document.getElementById("speed").value);progress=(progress+dt*speed*0.000018)%1;simMinutes=(simMinutes+dt*speed*0.003);placeFleet();updateDashboard();if(running)frame=requestAnimationFrame(animate)}
+document.querySelectorAll("[data-route]").forEach(b=>b.addEventListener("click",()=>{running=false;cancelAnimationFrame(frame);last=0;document.getElementById("playBtn").textContent="▶ Iniciar circulação";chooseRoute(+b.dataset.route)}));
+document.getElementById("playBtn").addEventListener("click",()=>{if(running){running=false;cancelAnimationFrame(frame);last=0;document.getElementById("playBtn").textContent="▶ Continuar circulação";document.getElementById("simStatus").textContent="Circulação pausada.";return}running=true;last=0;document.getElementById("playBtn").textContent="Ⅱ Pausar circulação";document.getElementById("simStatus").textContent="Trens circulando · relógio e posições avançam em tempo simulado.";frame=requestAnimationFrame(animate)});
+document.getElementById("resetBtn").addEventListener("click",()=>{running=false;cancelAnimationFrame(frame);last=0;progress=0;simMinutes=360;placeFleet();document.getElementById("playBtn").textContent="▶ Iniciar circulação";document.getElementById("simStatus").textContent="Ciclo reiniciado às 06:00.";updateDashboard()});
+document.getElementById("frequency").addEventListener("change",updateDashboard);document.getElementById("demand").addEventListener("input",updateDashboard); 
 function calc(){const a=+document.getElementById("current").value,b=+document.getElementById("proposed").value;document.getElementById("currentVal").textContent=a;document.getElementById("proposedVal").textContent=b;const pct=(a-b)/a*100;document.getElementById("reduction").textContent=(pct<0?"Aumento de "+Math.abs(pct).toLocaleString("pt-BR",{maximumFractionDigits:1}):pct.toLocaleString("pt-BR",{maximumFractionDigits:1})+"%");document.getElementById("saved").textContent=(a-b>=0?`${a-b} minutos a menos`:`${b-a} minutos a mais`)}
 document.getElementById("current").addEventListener("input",calc);document.getElementById("proposed").addEventListener("input",calc);
 document.getElementById("origin").addEventListener("change",e=>{if(e.target.value==="Trajeto personalizado"){document.getElementById("current").value=60;document.getElementById("proposed").value=35;calc()}else{document.getElementById("current").value=65;document.getElementById("proposed").value=32;calc()}});
