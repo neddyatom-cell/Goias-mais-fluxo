@@ -1,0 +1,340 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="theme-color" content="#103b65">
+<title>Goiás: Mais Fluxo, Menos Trânsito | Proposta de Rede Ferroviária</title>
+<style>
+:root{--navy:#103b65;--blue:#1677c8;--sky:#d9efff;--ink:#172b3d;--muted:#5b6b78;--bg:#f3f7fa;--card:#fff;--line:#dbe5ec;--green:#15966a;--orange:#f29d38;--pink:#d84d8b;--purple:#7d63d6}
+*{box-sizing:border-box}html{scroll-behavior:smooth}body{margin:0;background:var(--bg);color:var(--ink);font-family:system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif;line-height:1.45}
+header{background:linear-gradient(120deg,#103b65,#1677c8);color:white;padding:24px 16px 20px} .wrap{max-width:1100px;margin:auto;padding:0 14px}
+.topline{font-size:.76rem;letter-spacing:.1em;text-transform:uppercase;opacity:.86;font-weight:700}
+h1{font-size:clamp(1.7rem,5vw,3rem);line-height:1.06;margin:10px 0 12px;max-width:780px}
+header p{max-width:720px;margin:0;color:#e9f5ff}
+nav{display:flex;gap:8px;overflow:auto;padding:12px 0;scrollbar-width:thin}
+nav a{white-space:nowrap;text-decoration:none;background:#fff;color:var(--navy);border:1px solid var(--line);padding:9px 12px;border-radius:999px;font-size:.88rem;font-weight:650}
+main{padding:16px 0 40px}.section{margin:20px 0}.section h2{font-size:1.35rem;margin:0 0 5px}.intro{color:var(--muted);margin:0 0 14px;font-size:.95rem}
+.grid{display:grid;grid-template-columns:1fr;gap:14px}.card{background:var(--card);border:1px solid var(--line);border-radius:18px;padding:16px;box-shadow:0 5px 18px #153e5d0a;min-width:0}
+.card h3{margin:0 0 8px;font-size:1.03rem}.muted{color:var(--muted);font-size:.9rem}.pill{display:inline-block;font-size:.73rem;font-weight:750;border-radius:999px;padding:4px 8px;background:#e6f5ee;color:#176d4d}.pill.warn{background:#fff1db;color:#8a5714}.pill.info{background:#e6f2ff;color:#135a94}
+.mapimg{width:100%;height:auto;display:block;border-radius:12px;border:1px solid var(--line);background:white}.mapbox{position:relative}
+.legend{display:flex;gap:8px;flex-wrap:wrap;margin:12px 0 0}.legend span{font-size:.8rem;display:flex;align-items:center;gap:6px}.dot{width:10px;height:10px;border-radius:50%;display:inline-block}
+.route-buttons{display:flex;gap:8px;flex-wrap:wrap;margin:12px 0}.route-buttons button,.btn{border:0;border-radius:11px;background:var(--navy);color:white;padding:10px 13px;font-weight:700;cursor:pointer;font-size:.9rem}.route-buttons button[aria-pressed="true"]{outline:3px solid #a8d8ff;background:var(--blue)}
+button:focus-visible,a:focus-visible,input:focus-visible{outline:3px solid #ffbd59;outline-offset:2px}
+.stats{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}.stat{padding:13px;border-radius:13px;background:#f4f9fd;border:1px solid #e0edf6}.stat strong{font-size:1.45rem;display:block;color:var(--navy)}.stat small{color:var(--muted)}
+label{display:block;font-size:.9rem;font-weight:650;margin:14px 0 5px}select,input[type=range]{width:100%}select{padding:11px;border-radius:10px;border:1px solid #c8d6e0;background:white;color:var(--ink)}input[type=range]{accent-color:var(--blue)}
+.result{margin-top:12px;background:#edf7ff;border-radius:12px;padding:13px}.result strong{font-size:1.25rem;color:var(--navy)}
+.train-stage{background:linear-gradient(#e8f5ff,#f8fbfd);border:1px solid #d6e8f4;border-radius:14px;padding:12px;overflow:hidden}
+svg{max-width:100%;height:auto;display:block}.track{fill:none;stroke:#8aa0b0;stroke-width:7;stroke-linecap:round;stroke-linejoin:round}.track-inner{fill:none;stroke:white;stroke-width:2;stroke-dasharray:4 8}.station{fill:white;stroke:#1677c8;stroke-width:4}.train{fill:#ed674d;stroke:#963a2d;stroke-width:1.5}.train-window{fill:#fff4d8}
+.controls{display:flex;gap:8px;flex-wrap:wrap;margin-top:12px}.btn.secondary{background:#e4eef5;color:var(--navy)}.note{border-left:4px solid var(--orange);padding:10px 12px;background:#fff8ed;border-radius:0 10px 10px 0;font-size:.88rem}
+details{border:1px solid var(--line);border-radius:12px;padding:12px;background:white}details+details{margin-top:8px}summary{font-weight:700;cursor:pointer}
+footer{background:#e8f0f5;padding:22px 16px;color:#536573;font-size:.85rem}.small{font-size:.82rem;color:var(--muted)}
+@media(min-width:760px){header{padding:36px 18px 28px}.wrap{padding:0 20px}.grid.two{grid-template-columns:1.15fr .85fr}.grid.three{grid-template-columns:repeat(3,1fr)}.card{padding:20px}.stats{grid-template-columns:repeat(3,minmax(0,1fr))}}
+
+/* Simulação ferroviária v4 */
+.sim-v4 .sim-toolbar{display:flex;gap:8px;overflow-x:auto;padding:4px 2px 12px;scrollbar-width:thin}
+.sim-v4 .sim-toolbar button{flex:0 0 auto;border:1px solid #d4e0e9;border-radius:12px;background:#f5f9fc;color:#28465e;padding:10px 13px;font-weight:750;font-size:.86rem;cursor:pointer;transition:background .2s,border-color .2s,transform .2s}
+.sim-v4 .sim-toolbar button[aria-pressed="true"]{background:#103b65;color:#fff;border-color:#103b65;box-shadow:0 4px 12px #103b6520}
+.sim-v4 .sim-toolbar button:active,.sim-v4 .btn:active{transform:translateY(1px)}
+.sim-stage{position:relative;background:#f2f7fb;border:1px solid #cfdeea;border-radius:17px;overflow:hidden;box-shadow:inset 0 1px 0 #fff}
+.sim-stage-top{display:flex;justify-content:space-between;align-items:center;gap:8px;padding:11px 13px;background:#fff;border-bottom:1px solid #dce6ee}
+.sim-stage-top .eyebrow{font-size:.69rem;letter-spacing:.09em;font-weight:850;color:#5e7182;text-transform:uppercase}
+.live-chip{display:inline-flex;align-items:center;gap:6px;font-size:.72rem;font-weight:800;color:#176d4d;background:#e8f7ef;border:1px solid #cbeada;border-radius:999px;padding:5px 8px;white-space:nowrap}
+.live-chip .pulse{width:7px;height:7px;border-radius:50%;background:#15966a;box-shadow:0 0 0 3px #15966a20}
+#routeSvg{width:100%;height:auto;display:block;touch-action:manipulation}
+.sim-legend{display:flex;gap:12px;flex-wrap:wrap;padding:10px 13px;background:#fff;border-top:1px solid #dce6ee;color:#5b6b78;font-size:.77rem}
+.sim-legend span{display:inline-flex;align-items:center;gap:6px}.legend-swatch{width:17px;height:4px;border-radius:4px;display:inline-block}
+.route-kpis{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:9px;margin-top:12px}
+.route-kpi{border:1px solid #dbe6ed;border-radius:13px;padding:11px;background:linear-gradient(145deg,#fff,#f8fbfd);min-width:0}
+.route-kpi .label{font-size:.72rem;font-weight:750;text-transform:uppercase;letter-spacing:.035em;color:#6b7d8b;margin-bottom:3px}
+.route-kpi strong{display:block;font-size:1.25rem;color:#123b5d;line-height:1.2;overflow-wrap:anywhere}
+.route-kpi small{display:block;font-size:.74rem;color:#637687;margin-top:4px}
+.sim-controllers{display:grid;grid-template-columns:1fr;gap:10px;margin-top:13px}
+.control-panel{padding:12px;border:1px solid #dce6ee;border-radius:13px;background:#f8fbfd;min-width:0}
+.control-panel label{margin:0 0 7px;font-size:.82rem;color:#314c60}
+.control-panel .control-top{display:flex;justify-content:space-between;gap:8px;align-items:center;margin-bottom:4px}
+.control-panel output{font-weight:800;font-size:.82rem;color:#1269ac}
+.control-panel select{font-size:.88rem;padding:10px;background:#fff}
+.control-panel input[type=range]{margin:8px 0 2px}
+.sim-actions{display:flex;gap:8px;flex-wrap:wrap;margin-top:12px}
+.sim-actions .btn{display:inline-flex;align-items:center;justify-content:center;gap:7px;min-height:43px}
+.sim-actions .btn.secondary{border:1px solid #d2e0e9}
+.sim-side{display:flex;flex-direction:column;gap:12px}
+.sim-info-panel{border:1px solid #dbe6ee;border-radius:15px;padding:14px;background:#fff}
+.sim-info-panel h3{margin:0 0 5px}
+.sim-info-panel .route-subtitle{font-size:.84rem;color:#5b6b78;margin:0}
+.route-badge{display:inline-flex;border-radius:999px;padding:4px 8px;background:#e7f2fb;color:#155d91;font-size:.71rem;font-weight:800;margin-bottom:8px}
+.station-select-list{display:flex;flex-wrap:wrap;gap:6px;margin-top:10px}
+.station-select-list button{border:1px solid #d6e2ea;border-radius:999px;background:#f7fafc;color:#355064;padding:7px 10px;font-size:.76rem;font-weight:750;cursor:pointer}
+.station-select-list button[aria-pressed="true"]{background:#dcefff;border-color:#83bce8;color:#104f7d}
+.station-detail{margin-top:10px;padding:11px;border-radius:11px;background:#f2f8fc;border:1px solid #dbeaf4}
+.station-detail strong{display:block;color:#133f60;margin-bottom:2px}
+.station-detail span{font-size:.8rem;color:#587082}
+.departure-list{display:flex;gap:7px;flex-wrap:wrap;margin-top:10px}
+.departure-list span{padding:7px 9px;border:1px solid #dbe5ec;background:#f6f9fb;border-radius:9px;font-variant-numeric:tabular-nums;font-size:.82rem;font-weight:800;color:#204760}
+.sim-status{margin-top:12px;font-size:.81rem;color:#4e6577;min-height:1.3em}
+.sim-status::before{content:"";display:inline-block;width:7px;height:7px;border-radius:50%;background:#15966a;margin-right:7px;vertical-align:1px}
+.sim-caveat{margin-top:12px;background:#fff7e9;border:1px solid #f1dfbd;border-left:4px solid #e6a23b;border-radius:10px;padding:11px 12px;font-size:.8rem;color:#765523}
+.station-marker{cursor:pointer;outline:none}.station-marker:focus .station-ring,.station-marker.is-selected .station-ring{stroke:#ffb545;stroke-width:5}
+.station-label-bg{fill:#fff;stroke:#cfdae3;stroke-width:1}.station-label{font-size:13px;font-weight:750;fill:#244358;paint-order:stroke;stroke:#fff;stroke-width:3;stroke-linejoin:round}
+.train-unit{filter:url(#trainShadow)}.train-shell{fill:#f6fbff;stroke:#123c5e;stroke-width:2}.train-window{fill:#163f60}.train-door{fill:#7fb7d9}.train-nose{fill:#0877c8;stroke:#0d4f7e;stroke-width:1.4}.train-light{fill:#ffe8a3}.train-seam{stroke:#99b4c7;stroke-width:1.2}.station-ring{fill:#fff;stroke:#0b75bd;stroke-width:3}.station-core{fill:#0b75bd}.station-core.active{fill:#e8a43c}.track-bed{fill:none;stroke:#d3dfe8;stroke-width:20;stroke-linecap:round;stroke-linejoin:round}.track-halo{fill:none;stroke:#fff;stroke-width:14;stroke-linecap:round;stroke-linejoin:round}.track{fill:none;stroke:#1677c8;stroke-width:6;stroke-linecap:round;stroke-linejoin:round}.track-inner{fill:none;stroke:#fff;stroke-width:1.7;stroke-dasharray:2 8;stroke-linecap:round}
+@media(min-width:760px){.sim-controllers{grid-template-columns:1fr 1fr}.route-kpis{grid-template-columns:repeat(4,minmax(0,1fr))}.sim-v4 .sim-main-grid{grid-template-columns:minmax(0,1.45fr) minmax(280px,.75fr)}}
+@media(max-width:420px){.sim-stage-top{align-items:flex-start;flex-direction:column}.route-kpi strong{font-size:1.12rem}.sim-actions .btn{flex:1 1 130px}.sim-legend{gap:8px}}
+
+</style>
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin="" />
+<style>
+#liveMap{height:430px;width:100%;border-radius:14px;border:1px solid #cbd9e3;z-index:1;background:#e8f1e6}
+.map-toolbar{display:flex;flex-wrap:wrap;gap:8px;margin:12px 0}
+.map-toolbar button{border:0;border-radius:10px;background:#103b65;color:white;padding:10px 12px;font-weight:700}
+.map-toolbar button.active{background:#1677c8;outline:3px solid #c6e5ff}
+.map-key{display:flex;gap:12px;flex-wrap:wrap;margin-top:10px;font-size:.82rem;color:#526574}
+.map-key span{display:flex;align-items:center;gap:6px}.line-key{width:22px;height:4px;border-radius:3px;display:inline-block}
+.leaflet-popup-content{font-family:system-ui, sans-serif;font-size:14px;line-height:1.4}
+@media(max-width:520px){#liveMap{height:360px}}
+</style>
+</head>
+<body>
+<header>
+ <div class="wrap">
+  <div class="topline">Projeto conceitual de mobilidade e infraestrutura de transportes</div>
+  <h1>Goiás: Mais Fluxo,<br>Menos Trânsito</h1>
+  <p>Estudo preliminar de uma possível rede ferroviária em Goiás. A proposta examina como corredores de transporte sobre trilhos poderiam conectar áreas urbanas, aproximar municípios e facilitar a integração com os serviços de transporte já existentes.</p>
+ </div>
+</header>
+<div class="wrap">
+<nav aria-label="Navegação principal">
+ <a href="#rede">Mapa da proposta</a><a href="#simulacao">Simulação operacional</a><a href="#tempos">Comparação de tempos</a><a href="#metodo">Metodologia e dados</a>
+</nav>
+<main>
+<section class="section" id="rede">
+ <h2>01 · Mapa dos corredores propostos</h2>
+ <p class="intro">O mapa reúne municípios de referência e apresenta seis alternativas de corredores para discussão. Selecione uma opção para destacar seu percurso esquemático e visualizar o deslocamento de uma composição ferroviária. As linhas e as paradas indicadas representam hipóteses de planejamento; não correspondem a traçados aprovados nem a um projeto georreferenciado.</p>
+ <article class="card" style="margin-bottom:14px">
+  <div class="map-toolbar" role="group" aria-label="Selecionar corredor ferroviário">
+   <button class="active" data-map-route="0" aria-pressed="true">M1 · Metropolitano</button>
+   <button data-map-route="1" aria-pressed="false">R1 · Goiânia–Anápolis</button>
+   <button data-map-route="2" aria-pressed="false">S1 · Eixo Sul</button>
+   <button data-map-route="3" aria-pressed="false">O1 · Conexão Oeste</button>
+   <button data-map-route="4" aria-pressed="false">N1 · Corredor Norte</button>
+   <button data-map-route="5" aria-pressed="false">C1 · Anel conceitual</button>
+   <button id="mapPlay">▶ Iniciar percurso</button>
+   <button id="mapReset">↺ Reiniciar</button>
+  </div>
+  <div id="liveMap" role="application" aria-label="Mapa interativo de Goiás com corredores ferroviários ilustrativos"></div>
+  <div class="map-key"><span><i class="line-key" style="background:#1677c8"></i>Metropolitano</span><span><i class="line-key" style="background:#e78a24"></i>Regional</span><span><i class="line-key" style="background:#15966a"></i>Oeste</span><span><i class="line-key" style="background:#7d63d6"></i>Sul</span><span><i class="line-key" style="background:#d84d8b"></i>Norte</span><span><i class="line-key" style="background:#008eaa"></i>Anel conceitual</span><span>● Localizações de referência e paradas hipotéticas</span></div>
+  <p class="small" id="mapStatus" aria-live="polite" style="margin-top:10px">Base cartográfica disponível. Os corredores apresentados são conceituais e ainda não foram submetidos a estudos de engenharia.</p>
+ </article>
+ <div class="grid two">
+  <article class="card">
+   <span class="pill info">Interpretação do traçado</span>
+   <h3 style="margin-top:10px">Objetivo do mapa</h3>
+   <p class="muted">A representação permite comparar possíveis conexões entre municípios e compreender como diferentes corredores poderiam formar uma rede integrada. O desenho serve para discussão inicial e não comprova a viabilidade técnica, econômica ou ambiental de qualquer alinhamento.</p>
+   <div class="stats" style="margin-top:14px">
+    <div class="stat"><strong>2D</strong><small>Base cartográfica</small></div>
+    <div class="stat"><strong>3D*</strong><small>Representação conceitual</small></div>
+   </div>
+   <p class="small">Nota cartográfica: as linhas foram desenhadas para explicar a ideia geral da rede. A definição de um traçado real exigiria análise territorial, dados geográficos precisos, estudos de campo e projeto de engenharia.</p>
+   <div class="note">Os nomes, rotas, velocidades, custos e tempos devem ser conferidos com o documento técnico antes de serem tratados como dados confirmados.</div>
+  </article>
+ </div>
+</section>
+<section class="section sim-v4" id="simulacao">
+ <h2>02 · Simulação ilustrativa da operação ferroviária</h2>
+ <p class="intro">Este painel demonstra relações básicas entre intervalo de partidas, capacidade por composição, ocupação e quantidade teórica de trens necessária. Os controles alteram um cenário matemático simplificado; não reproduzem a operação de uma ferrovia real, uma tabela de horários ou uma previsão de passageiros.</p>
+ <div class="grid two sim-main-grid">
+  <article class="card">
+   <div class="sim-toolbar" role="group" aria-label="Escolher corredor demonstrativo">
+    <button data-route="0" aria-pressed="true">M1 · Metropolitano</button>
+    <button data-route="1" aria-pressed="false">R1 · Goiânia–Anápolis</button>
+    <button data-route="2" aria-pressed="false">S1 · Eixo Sul</button>
+    <button data-route="3" aria-pressed="false">O1 · Conexão Oeste</button>
+    <button data-route="4" aria-pressed="false">N1 · Corredor Norte</button>
+    <button data-route="5" aria-pressed="false">C1 · Anel conceitual</button>
+   </div>
+   <div class="sim-stage">
+    <div class="sim-stage-top"><div><div class="eyebrow">Centro de controle · visualização esquemática</div><strong id="stageRouteTitle">M1 · Metropolitano Oeste–Leste</strong></div><span class="live-chip"><i class="pulse"></i><span id="stageState">SIMULAÇÃO</span></span></div>
+    <svg id="routeSvg" viewBox="0 0 900 390" role="img" aria-label="Simulação ferroviária com trilhos, estações nomeadas e trens de três carros" xmlns="http://www.w3.org/2000/svg">
+     <defs>
+      <pattern id="simGrid" width="24" height="24" patternUnits="userSpaceOnUse"><path d="M24 0H0V24" fill="none" stroke="#d8e4ec" stroke-width=".8"/></pattern>
+      <linearGradient id="simBg" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#f6fafc"/><stop offset="1" stop-color="#eaf3f8"/></linearGradient>
+      <filter id="trainShadow" x="-30%" y="-60%" width="160%" height="220%"><feDropShadow dx="0" dy="3" stdDeviation="2.5" flood-color="#153c59" flood-opacity=".22"/></filter>
+     </defs>
+     <rect width="900" height="390" rx="14" fill="url(#simBg)"/><rect width="900" height="390" fill="url(#simGrid)" opacity=".72"/>
+     <g opacity=".8"><path d="M30 60H870M30 330H870" stroke="#d3e1ea" stroke-width="1.2" stroke-dasharray="3 7"/><text x="34" y="43" font-size="10" font-weight="800" letter-spacing="1.6" fill="#8a9eae">ESQUEMA DE LINHA · NÃO EM ESCALA</text><text x="866" y="365" text-anchor="end" font-size="10" fill="#8a9eae">GOIÁS · PROPOSTA CONCEITUAL</text></g>
+     <path id="routeHalo" class="track-halo" d="M80 260 C175 255 185 175 280 180 S410 285 505 250 S670 170 820 205"/>
+     <path id="trackBed" class="track-bed" d="M80 260 C175 255 185 175 280 180 S410 285 505 250 S670 170 820 205"/>
+     <path id="pathMain" class="track" d="M80 260 C175 255 185 175 280 180 S410 285 505 250 S670 170 820 205"/>
+     <path id="pathDash" class="track-inner" d="M80 260 C175 255 185 175 280 180 S410 285 505 250 S670 170 820 205"/>
+     <g id="stations"></g>
+     <g id="trainFleet"></g>
+    </svg>
+    <div class="sim-legend"><span><i class="legend-swatch" id="routeSwatch" style="background:#1677c8"></i>Corredor em análise</span><span><i class="legend-swatch" style="background:#9badba"></i>Traçado esquemático</span><span>● Selecione uma parada hipotética para consultar sua identificação</span></div>
+   </div>
+   <div class="sim-actions"><button class="btn" id="playBtn">▶ Iniciar simulação</button><button class="btn secondary" id="resetBtn">↺ Reiniciar</button><button class="btn secondary" id="stepBtn">＋ Avançar 5 min</button><button class="btn secondary" id="directionBtn" aria-pressed="false">⇄ Alternar sentido de circulação</button></div>
+   <div class="route-kpis">
+    <div class="route-kpi"><div class="label">Horário da simulação</div><strong id="simClock">06:00</strong><small>Janela horária simulada: 6h–22h</small></div>
+    <div class="route-kpi"><div class="label">Extensão de referência</div><strong id="simDistance">52 km</strong><small>Parâmetro de demonstração</small></div>
+    <div class="route-kpi"><div class="label">Duração estimada do percurso</div><strong id="simDuration">54 min</strong><small>Duração hipotética; não validada tecnicamente</small></div>
+    <div class="route-kpi"><div class="label">Frequência teórica</div><strong id="departuresHour">6</strong><small id="headway">Partidas a cada 10 minutos</small></div>
+   </div>
+   <div class="sim-controllers">
+    <div class="control-panel"><div class="control-top"><label for="speed">Velocidade da animação</label><output id="speedVal" for="speed">2×</output></div><input id="speed" type="range" min="1" max="5" value="2"><div class="small">Altera a velocidade da animação, não a velocidade real de um trem.</div></div>
+    <div class="control-panel"><label for="frequency">Intervalo entre partidas (hipótese)</label><select id="frequency"><option value="5">5 min · alta frequência</option><option value="10" selected>10 min · referência</option><option value="15">15 min</option><option value="20">20 min</option></select><div class="small" id="fleetHint">3 composições visíveis no esquema.</div></div>
+    <div class="control-panel"><div class="control-top"><label for="demand">Ocupação estimada por composição</label><output id="demandVal" for="demand">65%</output></div><input id="demand" type="range" min="20" max="100" value="65"><div class="small">Percentual da capacidade selecionada utilizado no cálculo ilustrativo.</div></div>
+    <div class="control-panel"><label for="serviceCapacity">Capacidade adotada por composição</label><select id="serviceCapacity"><option value="300">300 passageiros</option><option value="420" selected>420 passageiros</option><option value="600">600 passageiros</option></select><div class="small">Parâmetro adotado exclusivamente para demonstrar o cálculo.</div></div>
+   </div>
+   <div class="route-kpis" style="margin-top:10px">
+    <div class="route-kpi"><div class="label">Capacidade teórica por hora</div><strong id="simPassengers">1.638</strong><small>Capacidade teórica por sentido, conforme os parâmetros selecionados</small></div>
+    <div class="route-kpi"><div class="label">Pontos de parada representados</div><strong id="stationCount">4</strong><small>Frota de referência para o cenário selecionado</small></div>
+   </div>
+   <p class="sim-status" id="simStatus" aria-live="polite">Painel configurado. Os resultados dependem dos parâmetros hipotéticos selecionados.</p>
+  </article>
+  <aside class="sim-side">
+   <article class="sim-info-panel">
+    <span class="route-badge" id="routeBadge">M1 · METROPOLITANO</span>
+    <h3 id="routeName">Metropolitano Oeste–Leste</h3>
+    <p class="route-subtitle" id="routeDesc">Conceito de integração entre municípios da Região Metropolitana de Goiânia.</p>
+    <div class="station-detail" aria-live="polite"><strong id="stationInfoName">Estação: Trindade</strong><span id="stationInfoText">Localização incluída para demonstrar a seleção de paradas. Escolha outro ponto no mapa para consultar sua identificação.</span></div>
+    <h4 style="margin:15px 0 0;font-size:.87rem">Pontos de parada do corredor</h4>
+    <div class="station-select-list" id="stationSelectList"></div>
+   </article>
+   <article class="sim-info-panel">
+    <h3>Partidas seguintes</h3>
+    <p class="route-subtitle">Os horários exibidos são calculados a partir do relógio simulado e do intervalo de partidas escolhido. Não representam partidas reais.</p>
+    <div class="departure-list" id="departureList"><span>06:00</span><span>06:10</span><span>06:20</span></div>
+    <div class="route-kpis" style="margin-top:10px">
+     <div class="route-kpi"><div class="label">Frota teórica necessária</div><strong id="fleetRequirement">11</strong><small>Estimativa simplificada para os dois sentidos de circulação</small></div>
+     <div class="route-kpi"><div class="label">Ocupação</div><strong id="simLoad">65%</strong><small>Parâmetro ajustável no painel</small></div>
+    </div>
+   </article>
+   <article class="sim-info-panel">
+    <h3>Como interpretar a simulação</h3>
+    <p class="route-subtitle">A animação representa trens em movimento ao longo de um corredor hipotético. Distância, duração, intervalo, capacidade e ocupação são parâmetros de demonstração usados para mostrar como a oferta de viagens se relaciona com a capacidade teórica do sistema. Não foram obtidos por um estudo operacional.</p>
+    <div class="sim-caveat"><strong>Limitações:</strong> a definição de rotas, estações, distâncias, tempos de viagem, capacidade e frota exige estudos de engenharia, análise territorial, estimativas de demanda, integração com a rede de transporte existente e avaliação de viabilidade econômica e ambiental.</div>
+   </article>
+  </aside>
+ </div>
+</section>
+<section class="section" id="tempos">
+ <h2>03 · Comparador de tempos de viagem</h2>
+ <p class="intro">O comparador apresenta, lado a lado, um tempo de viagem de referência e um tempo hipotético para uma alternativa ferroviária. Os exemplos foram criados exclusivamente para demonstrar o cálculo da diferença em minutos e da variação percentual. Não são medições de viagens atuais nem previsões de desempenho.</p>
+ <div class="grid two">
+  <article class="card">
+   <label for="origin">Trecho analisado</label>
+   <select id="origin">
+    <option value="Goiânia–Anápolis">Cenário A · Goiânia–Anápolis</option>
+    <option value="Goiânia–Trindade">Cenário B · Goiânia–Trindade</option>
+    <option value="Goiânia–Aparecida de Goiânia">Cenário C · Goiânia–Aparecida de Goiânia</option>
+    <option value="Trajeto personalizado">Inserir outros tempos</option>
+   </select>
+   <p class="muted small" id="scenarioDesc">Escolha um dos cenários de demonstração. Os valores podem ser ajustados para verificar como a diferença de tempo e a variação percentual mudam.</p>
+   <label for="current">Tempo de referência (minutos)</label><input id="current" type="range" min="5" max="180" value="65"><div class="small"><span id="currentVal">65</span> minutos</div>
+   <label for="proposed">Tempo hipotético no cenário ferroviário (minutos)</label><input id="proposed" type="range" min="5" max="180" value="32"><div class="small"><span id="proposedVal">32</span> minutos</div>
+   <div class="result"><div>Redução percentual calculada</div><strong id="reduction">50,8%</strong><div class="small" id="saved">33 minutos a menos</div></div>
+  </article>
+  <article class="card">
+   <h3>Interpretação do cálculo</h3>
+   <p class="muted">A redução percentual é calculada dividindo a diferença entre o tempo de referência e o tempo hipotético pelo tempo de referência, e multiplicando o resultado por 100. Para estimar tempos de viagem de forma confiável, também seria necessário considerar a distância efetiva, a velocidade comercial, as paradas, o tempo de embarque e desembarque e as conexões com outros transportes.</p>
+   <div class="note">O resultado expressa apenas a diferença matemática entre os números informados. Não demonstra que a viagem seria realmente mais rápida. Para sustentar essa conclusão, seria necessário comparar itinerários equivalentes e utilizar dados verificáveis de distância, velocidade, paradas e operação.</div>
+  </article>
+ </div>
+</section>
+<section class="section" id="metodo">
+ <h2>04 · Metodologia, referências e limitações</h2>
+ <p class="intro">Esta seção identifica a origem dos elementos utilizados e esclarece os limites da análise. Os traçados esquemáticos e os números usados nas ferramentas têm caráter ilustrativo e não devem ser interpretados como evidências de viabilidade técnica.</p>
+ <details open><summary>Traçados esquemáticos</summary><p class="muted">Os percursos do mapa interativo foram desenhados para ilustrar possíveis conexões entre municípios. Não foram gerados a partir de coordenadas oficiais, levantamento topográfico ou projeto executivo.</p></details>
+ <details><summary>Exemplos numéricos e hipóteses</summary><p class="muted">Para demonstrar o cálculo, foram adotados três pares de tempos hipotéticos: Goiânia–Anápolis, de 65 para 32 minutos; Goiânia–Trindade, de 50 para 28 minutos; e Goiânia–Aparecida de Goiânia, de 40 para 22 minutos. Esses números não foram confirmados por medições, horários de transporte ou estudos de engenharia. São exemplos matemáticos e não devem ser apresentados como economias de tempo esperadas.</p></details>
+ <details><summary>Informações necessárias para estudos futuros</summary><p class="muted">Uma avaliação técnica precisaria incluir traçados georreferenciados, distâncias verificadas, localização e acessibilidade das estações, estudos de demanda, velocidade comercial, frequência de serviço, dimensionamento da frota, integração com outros transportes e análises de custo, impacto ambiental, segurança e implantação.</p></details>
+</section>
+</main>
+</div>
+<footer><div class="wrap"><strong>Goiás: Mais Fluxo, Menos Trânsito</strong><p>Projeto escolar em etapa conceitual. O conteúdo apresenta uma hipótese de rede ferroviária para fins de estudo e discussão; não constitui projeto executivo, estudo de viabilidade nem registro de uma rede aprovada.</p></div></footer>
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
+<script>
+(function(){
+ const status=document.getElementById('mapStatus');
+ if(!window.L){status.textContent='O mapa geográfico não carregou. Verifique a conexão e atualize a página.';return;}
+ const map=L.map('liveMap',{scrollWheelZoom:false}).setView([-16.55,-49.15],8);
+ L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',{maxZoom:19,attribution:'© OpenStreetMap contributors'}).addTo(map);
+ const places={
+  goiania:{name:'Goiânia',ll:[-16.6869,-49.2648],type:'Centro urbano de referência'},
+  aparecida:{name:'Aparecida de Goiânia',ll:[-16.823,-49.246],type:'Município / estação proposta'},
+  senador:{name:'Senador Canedo',ll:[-16.708,-49.091],type:'Município / estação proposta'},
+  trindade:{name:'Trindade',ll:[-16.651,-49.492],type:'Município / estação proposta'},
+  goianira:{name:'Goianira',ll:[-16.496,-49.426],type:'Município / estação proposta'},
+  anapolis:{name:'Anápolis',ll:[-16.3281,-48.953],type:'Centro regional de referência'},
+  bela:{name:'Bela Vista de Goiás',ll:[-16.972,-48.953],type:'Município / estação proposta'},
+  inhumas:{name:'Inhumas',ll:[-16.357,-49.496],type:'Município / estação proposta'}
+ };
+ const definitions=[
+  {code:'M1',name:'Metropolitano Oeste–Leste',color:'#1677c8',keys:['trindade','goianira','goiania','senador']},
+  {code:'R1',name:'Goiânia–Anápolis',color:'#e78a24',keys:['goiania','anapolis']},
+  {code:'S1',name:'Eixo Sul',color:'#7d63d6',keys:['goiania','aparecida','bela']},
+  {code:'O1',name:'Conexão Oeste',color:'#15966a',keys:['inhumas','goianira','goiania']},
+  {code:'N1',name:'Corredor Norte regional',color:'#d84d8b',keys:['inhumas','goianira','goiania','senador','anapolis']},
+  {code:'C1',name:'Anel metropolitano conceitual',color:'#008eaa',keys:['trindade','goianira','goiania','aparecida','senador','goiania','trindade']}
+ ];
+ const layers=[];let selected=0,train=null,timer=null,progress=0;
+ Object.values(places).forEach(p=>L.circleMarker(p.ll,{radius:5,color:'#fff',weight:2,fillColor:'#103b65',fillOpacity:1}).addTo(map).bindPopup('<strong>'+p.name+'</strong><br>'+p.type+'<br><em>Localização de referência; estação ferroviária não confirmada.</em>'));
+ definitions.forEach((r,i)=>{const pts=r.keys.map(k=>places[k].ll);const line=L.polyline(pts,{color:r.color,weight:5,opacity:.84,dashArray:'10 7'}).addTo(map);line.bindPopup('<strong>'+r.code+' · '+r.name+'</strong><br>Corredor conceitual, sem validação de engenharia.');const stations=r.keys.map(k=>{const p=places[k];return L.circleMarker(p.ll,{radius:7,color:'#fff',weight:2,fillColor:r.color,fillOpacity:1}).addTo(map).bindPopup('<strong>'+p.name+'</strong><br>'+r.name+'<br><em>Parada proposta apenas para fins ilustrativos.</em>')});layers.push({line,stations,pts,color:r.color});});
+ const trainIcon=L.divIcon({className:'',html:'<div style="background:#f3f9fd;border:2px solid #103b65;border-radius:7px;width:31px;height:19px;box-shadow:0 2px 7px #18385050;display:flex;align-items:center;justify-content:center;color:#103b65;font-size:13px">🚆</div>',iconSize:[35,23],iconAnchor:[17,11]});
+ function pointAt(pts,t){const n=pts.length-1;if(n<1)return pts[0];const x=t*n,idx=Math.min(Math.floor(x),n-1),f=x-idx;return[pts[idx][0]+(pts[idx+1][0]-pts[idx][0])*f,pts[idx][1]+(pts[idx+1][1]-pts[idx][1])*f]}
+ function stop(){if(timer)clearInterval(timer);timer=null;document.getElementById('mapPlay').textContent='▶ Iniciar percurso'}
+ function setRoute(i){selected=i;layers.forEach((l,j)=>{l.line.setStyle({opacity:j===i?1:.17,weight:j===i?7:3});l.stations.forEach(m=>m.setStyle({opacity:j===i?1:.25,fillOpacity:j===i?1:.25}))});document.querySelectorAll('[data-map-route]').forEach(b=>{const on=+b.dataset.mapRoute===i;b.classList.toggle('active',on);b.setAttribute('aria-pressed',String(on))});progress=0;if(train)train.setLatLng(layers[i].pts[0]);status.textContent=definitions[i].code+' · '+definitions[i].name+' selecionado. Traçado conceitual, não validado como linha real.'}
+ document.querySelectorAll('[data-map-route]').forEach(b=>b.addEventListener('click',()=>{stop();setRoute(+b.dataset.mapRoute)}));
+ document.getElementById('mapPlay').addEventListener('click',()=>{if(timer){stop();status.textContent='Movimento pausado.';return}if(!train)train=L.marker(layers[selected].pts[0],{icon:trainIcon,keyboard:false}).addTo(map);if(progress>=1)progress=0;document.getElementById('mapPlay').textContent='Ⅱ Pausar trem';status.textContent='Trem animado em um percurso conceitual. A posição é ilustrativa, sem horários reais.';timer=setInterval(()=>{progress+=.004;if(progress>=1){progress=1;train.setLatLng(layers[selected].pts[layers[selected].pts.length-1]);stop();status.textContent='Fim do percurso ilustrativo.';return}train.setLatLng(pointAt(layers[selected].pts,progress))},100)});
+ document.getElementById('mapReset').addEventListener('click',()=>{stop();progress=0;if(train)train.setLatLng(layers[selected].pts[0]);status.textContent='Percurso reiniciado · '+definitions[selected].name+'.'});
+ setRoute(0);setTimeout(()=>map.invalidateSize(),250);
+ window.goiasSelectMapRoute=setRoute;
+})();
+</script>
+<script>
+(function(){
+const routes=[
+ {code:'M1',category:'METROPOLITANO',name:'Metropolitano Oeste–Leste',short:'Integração oeste–leste',desc:'Hipótese de corredor entre Trindade, Goianira, Goiânia e Senador Canedo. A proposta permite discutir a integração entre municípios e a conexão com linhas de ônibus e outros serviços de transporte.',color:'#1677c8',distance:52,duration:54,d:'M80 260 C175 255 185 175 280 180 S410 285 505 250 S670 170 820 205',stations:[{name:'Trindade',t:0,dy:35},{name:'Goianira',t:.27,dy:-25},{name:'Goiânia',t:.57,dy:36},{name:'Senador Canedo',t:1,dy:35}]},
+ {code:'R1',category:'REGIONAL',name:'Goiânia–Anápolis',short:'Ligação entre polos regionais',desc:'Hipótese de ligação entre dois polos urbanos de Goiás. Sua avaliação dependeria de estudo de demanda, definição do alinhamento, disponibilidade de faixa de domínio e integração com os terminais de transporte.',color:'#e78a24',distance:58,duration:42,d:'M90 305 C195 300 260 220 360 220 S585 170 790 105',stations:[{name:'Goiânia',t:0,dy:35},{name:'Conexão Norte',t:.48,dy:-26},{name:'Anápolis',t:1,dy:-25}]},
+ {code:'S1',category:'METROPOLITANO',name:'Eixo Sul',short:'Acesso ao sul metropolitano',desc:'Hipótese de corredor ao sul da capital, com possíveis conexões em Aparecida de Goiânia e Bela Vista de Goiás. O percurso e a localização das estações precisariam ser definidos por análise territorial e estudo técnico.',color:'#7d63d6',distance:39,duration:38,d:'M95 95 C230 110 300 225 425 255 S655 315 805 335',stations:[{name:'Goiânia',t:0,dy:-25},{name:'Aparecida de Goiânia',t:.52,dy:-28},{name:'Bela Vista de Goiás',t:1,dy:-25}]},
+ {code:'O1',category:'REGIONAL',name:'Conexão Oeste',short:'Inhumas–Goianira–Goiânia',desc:'Hipótese de ligação pelo setor oeste e noroeste da região metropolitana, com possíveis pontos de integração em Goianira e Goiânia. A viabilidade depende de estudos específicos.',color:'#15966a',distance:42,duration:40,d:'M85 105 C190 110 220 180 325 205 S525 260 720 285',stations:[{name:'Inhumas',t:0,dy:-25},{name:'Goianira',t:.46,dy:-28},{name:'Goiânia',t:1,dy:-25}]},
+ {code:'N1',category:'REGIONAL',name:'Corredor Norte regional',short:'Noroeste–Goiânia–Anápolis',desc:'Cenário ampliado para analisar, em caráter preliminar, possíveis conexões entre municípios do noroeste, a capital e Anápolis. Não define um alinhamento ferroviário para implantação.',color:'#d84d8b',distance:91,duration:78,d:'M75 310 C165 300 190 200 290 190 S430 255 520 200 S675 90 825 105',stations:[{name:'Inhumas',t:0,dy:35},{name:'Goianira',t:.25,dy:-26},{name:'Goiânia',t:.53,dy:35},{name:'Senador Canedo',t:.77,dy:-27},{name:'Anápolis',t:1,dy:-25}]},
+ {code:'C1',category:'CONCEITO DE REDE',name:'Anel metropolitano conceitual',short:'Integração de corredores',desc:'Representação hipotética de como corredores metropolitanos poderiam se conectar. O anel é apenas um recurso de análise visual; não corresponde a uma linha existente ou aprovada.',color:'#008eaa',distance:68,duration:66,d:'M175 80 C330 45 500 70 650 115 C825 170 815 270 660 315 C495 360 280 330 145 275 C45 230 65 135 175 80',stations:[{name:'Trindade',t:0,dy:-24},{name:'Goiânia',t:.24,dy:-27},{name:'Senador Canedo',t:.47,dy:-26},{name:'Aparecida',t:.68,dy:33},{name:'Goianira',t:.86,dy:34}]}
+];
+const $=id=>document.getElementById(id);
+const pathMain=$('pathMain'),pathDash=$('pathDash'),trackBed=$('trackBed'),routeHalo=$('routeHalo'),stationLayer=$('stations'),fleetLayer=$('trainFleet');
+let routeIndex=0,progress=0,running=false,frame=0,lastFrame=0,simMinutes=360,reverseDirection=false,selectedStop=0,trainFleet=[];
+const trainMarkup=`<g class="train-unit"><rect x="-55" y="-13" width="110" height="26" rx="8" class="train-shell"/><rect x="-44" y="-8" width="19" height="9" rx="2" class="train-window"/><rect x="-21" y="-8" width="19" height="9" rx="2" class="train-window"/><rect x="2" y="-8" width="19" height="9" rx="2" class="train-window"/><rect x="-44" y="3" width="19" height="7" rx="2" class="train-window"/><rect x="-21" y="3" width="19" height="7" rx="2" class="train-window"/><rect x="2" y="3" width="19" height="7" rx="2" class="train-window"/><path d="M-30 -12V12 M-5 -12V12 M20 -12V12" class="train-seam"/><rect x="-33" y="-4" width="4" height="8" rx="1" class="train-door"/><rect x="-8" y="-4" width="4" height="8" rx="1" class="train-door"/><rect x="17" y="-4" width="4" height="8" rx="1" class="train-door"/><path d="M28 -13 H43 Q55 -13 55 0 Q55 13 43 13 H28 Z" class="train-nose"/><path d="M39 -7 H47 Q51 -7 51 0 Q51 7 47 7 H39 Z" fill="#d9efff"/><circle cx="49" cy="-7" r="2" class="train-light"/><circle cx="49" cy="7" r="2" class="train-light"/></g>`;
+function setTrackPath(d){[pathMain,pathDash,trackBed,routeHalo].forEach(el=>el.setAttribute('d',d))}
+function makeFleet(){fleetLayer.innerHTML='';trainFleet=[];for(let i=0;i<5;i++){const wrap=document.createElementNS('http://www.w3.org/2000/svg','g');wrap.innerHTML=trainMarkup;wrap.setAttribute('aria-hidden','true');wrap.style.display='none';fleetLayer.appendChild(wrap);trainFleet.push(wrap)}}
+function routePoint(t){const len=pathMain.getTotalLength();return pathMain.getPointAtLength(Math.max(0,Math.min(1,t))*len)}
+function drawStations(){const r=routes[routeIndex];stationLayer.innerHTML='';$('stationSelectList').innerHTML='';r.stations.forEach((s,i)=>{const p=routePoint(s.t);const g=document.createElementNS('http://www.w3.org/2000/svg','g');g.setAttribute('class','station-marker'+(i===selectedStop?' is-selected':''));g.setAttribute('tabindex','0');g.setAttribute('role','button');g.setAttribute('aria-label','Selecionar estação '+s.name);g.dataset.stopIndex=String(i);const label=s.name;const width=Math.max(72,Math.min(185,label.length*7.1+20));let lx=p.x-width/2,anchor='middle';if(lx<8){lx=8;anchor='start'}if(lx+width>892){lx=892-width;anchor='end'}const ly=s.dy<0?p.y+s.dy-22:p.y+s.dy-1;g.innerHTML=`<circle class="station-ring" cx="${p.x}" cy="${p.y}" r="9"/><circle class="station-core ${i===selectedStop?'active':''}" cx="${p.x}" cy="${p.y}" r="3.4"/><rect class="station-label-bg" x="${lx}" y="${ly}" width="${width}" height="22" rx="8"/><text class="station-label" x="${lx+width/2}" y="${ly+14.5}" text-anchor="middle">${label}</text>`;g.addEventListener('click',()=>selectStop(i));g.addEventListener('keydown',e=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();selectStop(i)}});stationLayer.appendChild(g);
+ const b=document.createElement('button');b.textContent=label;b.setAttribute('aria-pressed',String(i===selectedStop));b.addEventListener('click',()=>selectStop(i));$('stationSelectList').appendChild(b);
+ });updateStationInfo()}
+function selectStop(i){selectedStop=Math.max(0,Math.min(routes[routeIndex].stations.length-1,i));drawStations()}
+function updateStationInfo(){const r=routes[routeIndex],s=r.stations[selectedStop]||r.stations[0],next=r.stations[(selectedStop+1)%r.stations.length];$('stationInfoName').textContent='Estação: '+s.name;$('stationInfoText').textContent=`Parada ${selectedStop+1} de ${r.stations.length}. Próxima referência no esquema: ${next?next.name:'fim do trajeto'}. Localização e estação são conceituais.`;document.querySelectorAll('#stationSelectList button').forEach((b,i)=>b.setAttribute('aria-pressed',String(i===selectedStop)));stationLayer.querySelectorAll('.station-marker').forEach((g,i)=>g.classList.toggle('is-selected',i===selectedStop))}
+function requiredFleet(){return Math.max(2,Math.ceil(routes[routeIndex].duration*2/+ $('frequency').value))}
+function placeFleet(){const len=pathMain.getTotalLength();const freq=+$('frequency').value;const count=Math.min(5,Math.max(2,Math.ceil(30/freq)));trainFleet.forEach((tr,i)=>{tr.style.display=i<count?'':'none';if(i>=count)return;let p=((progress+(i/count)*2)%2);let reverse=p>1;if(reverse)p=2-p;const d=p*len,pt=pathMain.getPointAtLength(d),pt2=pathMain.getPointAtLength(Math.min(len,d+1.3));let angle=Math.atan2(pt2.y-pt.y,pt2.x-pt.x)*180/Math.PI;if(reverse)angle+=180;tr.setAttribute('transform',`translate(${pt.x} ${pt.y}) rotate(${angle})`)});$('fleetHint').textContent=`${count} composições visíveis no esquema; a frota real depende do ciclo operacional.`}
+function formatTime(mins){const n=((Math.floor(mins)%1440)+1440)%1440;return String(Math.floor(n/60)).padStart(2,'0')+':'+String(n%60).padStart(2,'0')}
+function updateDashboard(){const r=routes[routeIndex],freq=+$('frequency').value,demand=+$('demand').value,capacity=+$('serviceCapacity').value;const h=60/freq,passengers=Math.round(capacity*demand/100*h);$('simClock').textContent=formatTime(simMinutes);$('simDistance').textContent=r.distance+' km';$('simDuration').textContent=r.duration+' min';$('departuresHour').textContent=String(h);$('headway').textContent='Intervalo de '+freq+' min';$('demandVal').textContent=demand+'%';$('simPassengers').textContent=passengers.toLocaleString('pt-BR');$('simLoad').textContent=demand+'%';$('stationCount').textContent=String(r.stations.length);$('fleetRequirement').textContent=String(requiredFleet());$('speedVal').textContent=$('speed').value+'×';const times=[];const next=((Math.floor(simMinutes/freq)+1)*freq);for(let i=0;i<3;i++)times.push('<span>'+formatTime(next+i*freq)+'</span>');$('departureList').innerHTML=times.join('');placeFleet()}
+function chooseRoute(i){routeIndex=i;progress=0;selectedStop=0;const r=routes[i];setTrackPath(r.d);pathMain.style.stroke=r.color;$('routeSwatch').style.background=r.color;$('stageRouteTitle').textContent=r.code+' · '+r.name;$('routeName').textContent=r.name;$('routeBadge').textContent=r.code+' · '+r.category;$('routeDesc').textContent=r.desc;document.querySelectorAll('[data-route]').forEach(b=>{const on=+b.dataset.route===i;b.setAttribute('aria-pressed',String(on))});if(window.goiasSelectMapRoute)window.goiasSelectMapRoute(i);drawStations();updateDashboard();$('simStatus').textContent='Corredor alterado · '+r.stations.length+' paradas esquemáticas · parâmetros demonstrativos.'}
+function animate(ts){if(!running)return;if(!lastFrame)lastFrame=ts;const dt=Math.min(80,ts-lastFrame);lastFrame=ts;const speed=+$('speed').value;progress=(progress+(reverseDirection?-1:1)*dt*speed*.000012+2)%2;simMinutes+=dt*speed*.003;updateDashboard();frame=requestAnimationFrame(animate)}
+function stopAnimation(){running=false;cancelAnimationFrame(frame);lastFrame=0;$('playBtn').textContent='▶ Iniciar simulação';$('stageState').textContent='PAUSADO'}
+document.querySelectorAll('[data-route]').forEach(b=>b.addEventListener('click',()=>{stopAnimation();chooseRoute(+b.dataset.route)}));
+$('playBtn').addEventListener('click',()=>{if(running){stopAnimation();$('simStatus').textContent='Circulação pausada; relógio virtual congelado.';return}running=true;lastFrame=0;$('playBtn').textContent='Ⅱ Pausar circulação';$('stageState').textContent='EM MOVIMENTO';$('simStatus').textContent='Simulação em movimento · o relógio virtual e as composições avançam.';frame=requestAnimationFrame(animate)});
+$('resetBtn').addEventListener('click',()=>{stopAnimation();progress=0;simMinutes=360;reverseDirection=false;$('directionBtn').setAttribute('aria-pressed','false');$('directionBtn').textContent='⇄ Alternar sentido de circulação';updateDashboard();$('simStatus').textContent='Ciclo reiniciado às 06:00.'});
+$('stepBtn').addEventListener('click',()=>{if(running)stopAnimation();simMinutes+=5;progress=(progress+(reverseDirection?-.08:.08)+2)%2;updateDashboard();$('simStatus').textContent='Relógio avançado manualmente em 5 minutos.'});
+$('directionBtn').addEventListener('click',()=>{reverseDirection=!reverseDirection;progress=(progress+1)%2;$('directionBtn').setAttribute('aria-pressed',String(reverseDirection));$('directionBtn').textContent=reverseDirection?'⇄ Sentido: retorno':'⇄ Alternar sentido de circulação';$('simStatus').textContent=reverseDirection?'Visualização de retorno ativada.':'Circulação de ida e volta ativada.';updateDashboard()});
+['speed','frequency','demand','serviceCapacity'].forEach(id=>$(id).addEventListener('input',updateDashboard));
+// Demonstration time comparator remains linked to its controls.
+function calc(){const a=+$('current').value,b=+$('proposed').value;$('currentVal').textContent=a;$('proposedVal').textContent=b;const pct=(a-b)/a*100;$('reduction').textContent=pct<0?'Aumento de '+Math.abs(pct).toLocaleString('pt-BR',{maximumFractionDigits:1})+'%':pct.toLocaleString('pt-BR',{maximumFractionDigits:1})+'%';$('saved').textContent=a-b>=0?`${a-b} minutos a menos`:`${b-a} minutos a mais`}
+$('current').addEventListener('input',calc);$('proposed').addEventListener('input',calc);const scenarios={
+ 'Goiânia–Anápolis':{current:65,proposed:32,desc:'Ligação regional hipotética entre Goiânia e Anápolis. Os tempos são ilustrativos e não correspondem a uma previsão operacional.'},
+ 'Goiânia–Trindade':{current:50,proposed:28,desc:'Exemplo metropolitano hipotético para comparar uma viagem rodoviária de referência com um cenário ferroviário proposto.'},
+ 'Goiânia–Aparecida de Goiânia':{current:40,proposed:22,desc:'Exemplo de deslocamento metropolitano. Os valores servem apenas para demonstrar o cálculo de variação de tempo.'},
+ 'Trajeto personalizado':{current:60,proposed:35,desc:'Insira os tempos de referência do trajeto escolhido. Registre a fonte dos dados antes de utilizar o resultado em uma apresentação.'}
+};
+$('origin').addEventListener('change',e=>{const c=scenarios[e.target.value]||scenarios['Trajeto personalizado'];$('current').value=c.current;$('proposed').value=c.proposed;$('scenarioDesc').textContent=c.desc;calc()});
+makeFleet();chooseRoute(0);calc();
+})();
+</script>
+</body>
+</html>
